@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Info } from "lucide-react"
+import { Link } from "react-router-dom"
 
 const Header = () => {
   return (
@@ -25,17 +26,17 @@ const Header = () => {
           <a href="#testimonials" className="text-muted-foreground hover:text-foreground transition-colors">
             Testimonials
           </a>
-          <a href="/compliance-check" className="text-muted-foreground hover:text-foreground transition-colors">
+          <Link to="/compliance-check" className="text-muted-foreground hover:text-foreground transition-colors">
             Compliance Check
-          </a>
-          <a href="/api-test" className="text-muted-foreground hover:text-foreground transition-colors">
+          </Link>
+          <Link to="/api-test" className="text-muted-foreground hover:text-foreground transition-colors">
             API Test
-          </a>
+          </Link>
         </nav>
 
         <div className="flex items-center gap-2 group relative">
-          <Button variant="cyber" size="lg">
-            Try Cyber AI
+          <Button variant="cyber" size="lg" asChild>
+            <Link to="/compliance-check">Try Cyber AI</Link>
           </Button>
           <Info className="w-4 h-4 text-muted-foreground group-hover:text-cyber-teal cursor-help transition-colors" />
           <div className="absolute right-0 top-full mt-2 px-3 py-2 bg-popover border border-border rounded-md text-sm text-popover-foreground opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">

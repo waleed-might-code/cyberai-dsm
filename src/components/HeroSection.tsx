@@ -1,7 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Shield, Zap, AlertTriangle, Info } from "lucide-react";
-import heroImage from "@/assets/cyber-hero-bg.jpg";
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { AlertTriangle, Shield, Zap, Info } from "lucide-react"
+import { Link } from "react-router-dom"
+import heroImage from "@/assets/cyber-hero-bg.jpg"
 const HeroSection = () => {
   return <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{
@@ -41,7 +42,9 @@ const HeroSection = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <div className="flex items-center gap-3 group relative">
-              <Button variant="cyber" size="xl" className="px-12 py-4 text-xl">Try Cyber AI</Button>
+              <Button variant="cyber" size="xl" className="px-12 py-4 text-xl" asChild>
+                <Link to="/compliance-check">Try Cyber AI</Link>
+              </Button>
               <Info className="w-5 h-5 text-muted-foreground group-hover:text-cyber-teal cursor-help transition-colors" />
               <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 px-3 py-2 bg-popover border border-border rounded-md text-sm text-popover-foreground opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">
                 This is a demonstration of our text compliance AI tool

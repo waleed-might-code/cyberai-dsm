@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Rocket, Users, Target, Info } from "lucide-react"
+import { Rocket, Users, Building, Briefcase, Info, Target } from "lucide-react"
+import { Link } from "react-router-dom"
 
 const TestingSection = () => {
   return (
@@ -79,8 +80,8 @@ const TestingSection = () => {
 
         <div className="text-center">
           <div className="flex items-center justify-center gap-3 mb-4 group relative">
-            <Button variant="cyber" size="xl" className="px-12 py-4 text-xl">
-              Try Cyber AI
+            <Button variant="cyber" size="xl" className="px-12 py-4 text-xl" asChild>
+              <Link to="/compliance-check">Try Cyber AI</Link>
             </Button>
             <Info className="w-5 h-5 text-muted-foreground group-hover:text-cyber-teal cursor-help transition-colors" />
             <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 px-3 py-2 bg-popover border border-border rounded-md text-sm text-popover-foreground opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">

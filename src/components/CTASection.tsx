@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
-import { AlertTriangle, Shield, Clock, Info } from "lucide-react"
+import { AlertTriangle, Clock, DollarSign, Info, Shield } from "lucide-react"
+import { Link } from "react-router-dom"
 
 const CTASection = () => {
   return (
@@ -43,8 +44,8 @@ const CTASection = () => {
           </div>
 
           <div className="flex items-center justify-center gap-3 mb-4 group relative">
-            <Button variant="cyber" size="xl" className="px-16 py-6 text-2xl">
-              Try Cyber AI
+            <Button variant="cyber" size="xl" className="px-16 py-6 text-2xl" asChild>
+              <Link to="/compliance-check">Try Cyber AI</Link>
             </Button>
             <Info className="w-6 h-6 text-muted-foreground group-hover:text-cyber-teal cursor-help transition-colors" />
             <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 px-3 py-2 bg-popover border border-border rounded-md text-sm text-popover-foreground opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">
