@@ -66,6 +66,8 @@ const ComplianceCheck = () => {
     setCurrentStep('scanning');
     
     const allUrls = [url, ...additionalUrls];
+    console.log('Starting scan for URLs:', allUrls);
+    console.log('Selected region:', selectedRegion);
     
     try {
       // Start compliance check
@@ -75,29 +77,66 @@ const ComplianceCheck = () => {
         body: JSON.stringify({ urls: allUrls })
       });
       
+      console.log('Response status:', response.status);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
       const jobData = await response.json();
+      console.log('Job data received:', jobData);
+      
+      if (!jobData.job_id) {
+        console.error('No job_id in response:', jobData);
+        throw new Error('No job ID received from server');
+      }
+      
       setJobId(jobData.job_id);
+      console.log('Job ID set:', jobData.job_id);
       
       // Poll for results
       const pollForResults = async () => {
+        console.log('Polling for job status:', jobData.job_id);
+        
         const statusResponse = await fetch(`https://cyberai.techrealm.pk/complaince_job/${jobData.job_id}`);
+        console.log('Status response:', statusResponse.status);
+        
+        if (!statusResponse.ok) {
+          console.error('Status check failed:', statusResponse.status);
+          throw new Error(`Status check failed: ${statusResponse.status}`);
+        }
+        
         const status = await statusResponse.json();
+        console.log('Job status:', status);
         
         if (status.status === 'completed') {
+          console.log('Job completed, fetching report...');
           const reportResponse = await fetch(`https://cyberai.techrealm.pk/complaince_job/${jobData.job_id}/report`);
+          
+          if (!reportResponse.ok) {
+            throw new Error(`Report fetch failed: ${reportResponse.status}`);
+          }
+          
           const results = await reportResponse.json();
+          console.log('Results received:', results);
           setScanResults(results);
           setCurrentStep('results');
         } else if (status.status === 'failed') {
           throw new Error('Scan failed');
         } else {
+          console.log('Job still in progress, polling again in 3 seconds...');
           setTimeout(pollForResults, 3000);
         }
       };
       
       setTimeout(pollForResults, 3000);
     } catch (error) {
-      toast({ title: "Scan failed", variant: "destructive" });
+      console.error('Scan error:', error);
+      toast({ 
+        title: "Scan failed", 
+        description: error instanceof Error ? error.message : 'Unknown error occurred',
+        variant: "destructive" 
+      });
       setCurrentStep('confirm');
     }
   };
