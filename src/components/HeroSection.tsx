@@ -1,19 +1,14 @@
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Shield, Zap, AlertTriangle } from "lucide-react"
-import heroImage from "@/assets/cyber-hero-bg.jpg"
-
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Shield, Zap, AlertTriangle } from "lucide-react";
+import heroImage from "@/assets/cyber-hero-bg.jpg";
 const HeroSection = () => {
-  return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ 
-          backgroundImage: `url(${heroImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
-      />
+  return <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{
+      backgroundImage: `url(${heroImage})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center'
+    }} />
       <div className="absolute inset-0 bg-gradient-to-r from-cyber-dark/90 via-cyber-navy/80 to-cyber-dark/90" />
       
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 text-center">
@@ -45,17 +40,13 @@ const HeroSection = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button variant="cyber" size="xl" className="px-12 py-4 text-xl">
-              Try Cyber AI Now
-            </Button>
+            <Button variant="cyber" size="xl" className="px-12 py-4 text-xl">Try Text Compliance AI Now</Button>
             <p className="text-sm text-muted-foreground">
               ☎️ Call us: <span className="text-cyber-teal">+966 11 XXX-XXXX</span>
             </p>
           </div>
         </div>
       </div>
-    </section>
-  )
-}
-
-export default HeroSection
+    </section>;
+};
+export default HeroSection;
