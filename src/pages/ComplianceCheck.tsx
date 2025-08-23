@@ -7,10 +7,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { ArrowDown, Globe, Shield, CheckCircle, AlertTriangle, Loader2, Plus, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
-const saudiRegions = [
+const gccRegions = [
   { id: 'reg_sa01', name: 'Saudi Arabia' },
-  { id: 'reg_gcc01', name: 'GCC States' },
-  { id: 'reg_me01', name: 'Middle East' }
+  { id: 'reg_ae01', name: 'United Arab Emirates (UAE)' },
+  { id: 'reg_kw01', name: 'Kuwait' },
+  { id: 'reg_qa01', name: 'Qatar' },
+  { id: 'reg_om01', name: 'Oman' },
+  { id: 'reg_bh01', name: 'Bahrain' }
 ];
 
 const ComplianceCheck = () => {
@@ -19,6 +22,8 @@ const ComplianceCheck = () => {
   const [additionalUrls, setAdditionalUrls] = useState<string[]>([]);
   const [newUrl, setNewUrl] = useState('');
   const [selectedRegion, setSelectedRegion] = useState('');
+  const [customLocation, setCustomLocation] = useState('');
+  const [showCustomInput, setShowCustomInput] = useState(false);
   const [lawsData, setLawsData] = useState<any>(null);
   const [scanResults, setScanResults] = useState<any>(null);
   const [jobId, setJobId] = useState('');
@@ -229,7 +234,7 @@ const ComplianceCheck = () => {
             <p className="text-muted-foreground mb-8">Choose the region whose compliance laws apply to your website</p>
             
             <div className="space-y-4">
-              {saudiRegions.map((region) => (
+              {gccRegions.map((region) => (
                 <Card 
                   key={region.id}
                   className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:border-primary/50"
@@ -243,6 +248,59 @@ const ComplianceCheck = () => {
                   </CardContent>
                 </Card>
               ))}
+              
+              {/* Custom Location Input */}
+              <Card className="border-dashed border-2 border-primary/30">
+                <CardContent className="p-6">
+                  {!showCustomInput ? (
+                    <div 
+                      className="cursor-pointer text-center"
+                      onClick={() => setShowCustomInput(true)}
+                    >
+                      <div className="flex items-center justify-center gap-4">
+                        <Globe className="h-6 w-6 text-muted-foreground" />
+                        <span className="font-medium text-lg text-muted-foreground">
+                          Other Location (Type to specify)
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      <Input
+                        placeholder="Enter your location (e.g., United States, European Union)"
+                        value={customLocation}
+                        onChange={(e) => setCustomLocation(e.target.value)}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter' && customLocation.trim()) {
+                            handleLocationSelect('custom');
+                          }
+                        }}
+                        className="text-center"
+                        autoFocus
+                      />
+                      <div className="flex gap-2 justify-center">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => {
+                            setShowCustomInput(false);
+                            setCustomLocation('');
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                        <Button 
+                          size="sm"
+                          onClick={() => customLocation.trim() && handleLocationSelect('custom')}
+                          disabled={!customLocation.trim()}
+                        >
+                          Continue
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
             </div>
           </div>
         )}
@@ -268,7 +326,10 @@ const ComplianceCheck = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Shield className="h-6 w-6" />
-                  {saudiRegions.find(r => r.id === selectedRegion)?.name} Compliance Laws
+                  {selectedRegion === 'custom' 
+                    ? `${customLocation} Compliance Laws` 
+                    : `${gccRegions.find(r => r.id === selectedRegion)?.name} Compliance Laws`
+                  }
                 </CardTitle>
               </CardHeader>
               <CardContent>
