@@ -84,7 +84,7 @@ const TestingSection = () => {
             </Button>
             <div className="group relative">
               <Info className="w-5 h-5 text-muted-foreground hover:text-cyber-teal cursor-help transition-colors" />
-              <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 bg-popover border border-border rounded-md text-sm text-popover-foreground opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+              <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 px-3 py-2 bg-popover border border-border rounded-md text-sm text-popover-foreground opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">
                 This is a demonstration of our text compliance AI tool
               </div>
             </div>
