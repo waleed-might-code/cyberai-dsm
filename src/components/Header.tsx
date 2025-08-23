@@ -27,15 +27,13 @@ const Header = () => {
           </a>
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 group relative">
           <Button variant="cyber" size="lg">
             Try Cyber AI
           </Button>
-          <div className="group relative">
-            <Info className="w-4 h-4 text-muted-foreground hover:text-cyber-teal cursor-help transition-colors" />
-            <div className="absolute right-0 top-full mt-2 px-3 py-2 bg-popover border border-border rounded-md text-sm text-popover-foreground opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">
-              This is a demonstration of our text compliance AI tool
-            </div>
+          <Info className="w-4 h-4 text-muted-foreground group-hover:text-cyber-teal cursor-help transition-colors" />
+          <div className="absolute right-0 top-full mt-2 px-3 py-2 bg-popover border border-border rounded-md text-sm text-popover-foreground opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">
+            This is a demonstration of our text compliance AI tool
           </div>
         </div>
       </div>
