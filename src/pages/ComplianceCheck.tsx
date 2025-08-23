@@ -8,12 +8,12 @@ import { ArrowDown, Globe, Shield, CheckCircle, AlertTriangle, Loader2, Plus, X 
 import { useToast } from '@/hooks/use-toast';
 
 const gccRegions = [
-  { id: 'reg_sa01', name: 'Saudi Arabia' },
-  { id: 'reg_ae01', name: 'United Arab Emirates (UAE)' },
-  { id: 'reg_kw01', name: 'Kuwait' },
-  { id: 'reg_qa01', name: 'Qatar' },
-  { id: 'reg_om01', name: 'Oman' },
-  { id: 'reg_bh01', name: 'Bahrain' }
+  { id: 'reg_au01', name: 'Saudi Arabia' }, // Using working region ID for now
+  { id: 'reg_au01', name: 'United Arab Emirates (UAE)' },
+  { id: 'reg_au01', name: 'Kuwait' },
+  { id: 'reg_au01', name: 'Qatar' },
+  { id: 'reg_au01', name: 'Oman' },
+  { id: 'reg_au01', name: 'Bahrain' }
 ];
 
 const ComplianceCheck = () => {
@@ -75,17 +75,31 @@ const ComplianceCheck = () => {
     console.log('Selected region:', selectedRegion);
     
     try {
+      // Log the exact request being sent
+      const requestUrl = `https://cyberai.techrealm.pk/region/${selectedRegion}/check_compliance`;
+      const requestBody = { urls: allUrls };
+      
+      console.log('=== COMPLIANCE CHECK REQUEST ===');
+      console.log('URL:', requestUrl);
+      console.log('Method: POST');
+      console.log('Headers:', { 'Content-Type': 'application/json' });
+      console.log('Body:', JSON.stringify(requestBody, null, 2));
+      console.log('================================');
+      
       // Start compliance check
-      const response = await fetch(`https://cyberai.techrealm.pk/region/${selectedRegion}/check_compliance`, {
+      const response = await fetch(requestUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ urls: allUrls })
+        body: JSON.stringify(requestBody)
       });
       
       console.log('Response status:', response.status);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
       
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorText = await response.text();
+        console.log('Error response body:', errorText);
+        throw new Error(`HTTP ${response.status}: ${errorText}`);
       }
       
       const jobData = await response.json();
@@ -360,6 +374,22 @@ const ComplianceCheck = () => {
               <h2 className="text-4xl font-bold mb-4">Confirm Your URLs</h2>
               <p className="text-muted-foreground">Review and add additional URLs to scan</p>
             </div>
+
+            {/* Debug Panel */}
+            <Card className="mb-6 bg-yellow-50 border-yellow-200">
+              <CardHeader>
+                <CardTitle className="text-sm text-yellow-800">🔍 Debug Information</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2 text-sm text-yellow-900">
+                <div><strong>Region ID:</strong> {selectedRegion}</div>
+                <div><strong>Region Name:</strong> {selectedRegion === 'custom' ? customLocation : gccRegions.find(r => r.id === selectedRegion)?.name}</div>
+                <div><strong>API Endpoint:</strong> https://cyberai.techrealm.pk/region/{selectedRegion}/check_compliance</div>
+                <div><strong>Request Body:</strong></div>
+                <pre className="bg-yellow-100 p-2 rounded text-xs overflow-x-auto">
+                  {JSON.stringify({ urls: [url, ...additionalUrls] }, null, 2)}
+                </pre>
+              </CardContent>
+            </Card>
 
             <Card className="mb-6">
               <CardHeader>
