@@ -8,12 +8,12 @@ import { ArrowDown, Globe, Shield, CheckCircle, AlertTriangle, Loader2, Plus, X 
 import { useToast } from '@/hooks/use-toast';
 
 const gccRegions = [
-  { id: 'reg_au01', name: 'Saudi Arabia' }, // Using working region ID for now
-  { id: 'reg_au01', name: 'United Arab Emirates (UAE)' },
-  { id: 'reg_au01', name: 'Kuwait' },
-  { id: 'reg_au01', name: 'Qatar' },
-  { id: 'reg_au01', name: 'Oman' },
-  { id: 'reg_au01', name: 'Bahrain' }
+  { id: 'saudi-arabia', name: 'Saudi Arabia' },
+  { id: 'uae', name: 'United Arab Emirates (UAE)' },
+  { id: 'kuwait', name: 'Kuwait' },
+  { id: 'qatar', name: 'Qatar' },
+  { id: 'oman', name: 'Oman' },
+  { id: 'bahrain', name: 'Bahrain' }
 ];
 
 const ComplianceCheck = () => {
@@ -22,6 +22,7 @@ const ComplianceCheck = () => {
   const [additionalUrls, setAdditionalUrls] = useState<string[]>([]);
   const [newUrl, setNewUrl] = useState('');
   const [selectedRegion, setSelectedRegion] = useState('');
+  const [actualRegionId, setActualRegionId] = useState(''); // The real region ID from API
   const [customLocation, setCustomLocation] = useState('');
   const [showCustomInput, setShowCustomInput] = useState(false);
   const [lawsData, setLawsData] = useState<any>(null);
@@ -40,18 +41,70 @@ const ComplianceCheck = () => {
     setCurrentStep('location');
   };
 
-  const handleLocationSelect = async (regionId: string) => {
-    setSelectedRegion(regionId);
+  const handleLocationSelect = async (regionSelection: string) => {
+    setSelectedRegion(regionSelection);
     setCurrentStep('loading');
-
+    
     try {
-      // Fetch region laws
-      const response = await fetch(`https://cyberai.techrealm.pk/regions/${regionId}/laws?newlaws=false`);
-      const data = await response.json();
-      setLawsData(data);
+      // Determine region name
+      let regionName = '';
+      if (regionSelection === 'custom') {
+        regionName = customLocation;
+      } else {
+        regionName = gccRegions.find(r => r.id === regionSelection)?.name || regionSelection;
+      }
+
+      console.log('=== CREATING/CHECKING REGION ===');
+      console.log('Region Name:', regionName);
+      console.log('Region Selection:', regionSelection);
+      
+      // Create or get existing region
+      const regionResponse = await fetch('https://cyberai.techrealm.pk/regions/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: regionName })
+      });
+      
+      console.log('Region creation response status:', regionResponse.status);
+      
+      if (!regionResponse.ok) {
+        throw new Error(`Failed to create region: ${regionResponse.status}`);
+      }
+      
+      const regionData = await regionResponse.json();
+      console.log('Region data received:', regionData);
+      
+      // Store the actual region ID returned by the API
+      setActualRegionId(regionData.region_id);
+      
+      // If region already exists, we might get laws in the response
+      if (regionData.existing && regionData.laws) {
+        console.log('Using existing region with cached laws');
+        setLawsData(regionData.laws);
+        setCurrentStep('laws');
+        return;
+      }
+      
+      // Fetch laws for the region
+      console.log('Fetching laws for region:', regionData.region_id);
+      const lawsResponse = await fetch(`https://cyberai.techrealm.pk/regions/${regionData.region_id}/laws?newlaws=false`);
+      
+      if (!lawsResponse.ok) {
+        throw new Error(`Failed to fetch laws: ${lawsResponse.status}`);
+      }
+      
+      const laws = await lawsResponse.json();
+      console.log('Laws received:', laws);
+      setLawsData(laws);
       setCurrentStep('laws');
+      
     } catch (error) {
-      toast({ title: "Failed to load compliance laws", variant: "destructive" });
+      console.error('Error in location selection:', error);
+      toast({ 
+        title: "Failed to load region", 
+        description: error instanceof Error ? error.message : 'Unknown error occurred',
+        variant: "destructive" 
+      });
       setCurrentStep('location');
     }
   };
@@ -76,17 +129,19 @@ const ComplianceCheck = () => {
     
     try {
       // Log the exact request being sent
-      const requestUrl = `https://cyberai.techrealm.pk/region/${selectedRegion}/check_compliance`;
+      const requestUrl = `https://cyberai.techrealm.pk/region/${actualRegionId}/check_compliance`;
       const requestBody = { urls: allUrls };
       
       console.log('=== COMPLIANCE CHECK REQUEST ===');
+      console.log('Selected Region:', selectedRegion);
+      console.log('Actual Region ID:', actualRegionId);
       console.log('URL:', requestUrl);
       console.log('Method: POST');
       console.log('Headers:', { 'Content-Type': 'application/json' });
       console.log('Body:', JSON.stringify(requestBody, null, 2));
       console.log('================================');
       
-      // Start compliance check
+      // Start compliance check using the actual region ID
       const response = await fetch(requestUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -165,6 +220,9 @@ const ComplianceCheck = () => {
     setUrl('');
     setAdditionalUrls([]);
     setSelectedRegion('');
+    setActualRegionId('');
+    setCustomLocation('');
+    setShowCustomInput(false);
     setLawsData(null);
     setScanResults(null);
   };
@@ -381,9 +439,10 @@ const ComplianceCheck = () => {
                 <CardTitle className="text-sm text-yellow-800">🔍 Debug Information</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 text-sm text-yellow-900">
-                <div><strong>Region ID:</strong> {selectedRegion}</div>
+                <div><strong>Selected Region:</strong> {selectedRegion}</div>
+                <div><strong>Actual Region ID:</strong> {actualRegionId}</div>
                 <div><strong>Region Name:</strong> {selectedRegion === 'custom' ? customLocation : gccRegions.find(r => r.id === selectedRegion)?.name}</div>
-                <div><strong>API Endpoint:</strong> https://cyberai.techrealm.pk/region/{selectedRegion}/check_compliance</div>
+                <div><strong>API Endpoint:</strong> https://cyberai.techrealm.pk/region/{actualRegionId}/check_compliance</div>
                 <div><strong>Request Body:</strong></div>
                 <pre className="bg-yellow-100 p-2 rounded text-xs overflow-x-auto">
                   {JSON.stringify({ urls: [url, ...additionalUrls] }, null, 2)}
