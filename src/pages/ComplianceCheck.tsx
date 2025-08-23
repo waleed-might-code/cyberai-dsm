@@ -35,9 +35,24 @@ const ComplianceCheck = () => {
       toast({ title: "Please enter a valid URL", variant: "destructive" });
       return;
     }
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-      setUrl('https://' + url);
+    
+    // Clean the URL - remove any existing protocol
+    let cleanUrl = url.trim();
+    if (cleanUrl.startsWith('https://')) {
+      cleanUrl = cleanUrl.replace('https://', '');
     }
+    if (cleanUrl.startsWith('http://')) {
+      cleanUrl = cleanUrl.replace('http://', '');
+    }
+    
+    // Ensure it starts with https://
+    const finalUrl = 'https://' + cleanUrl;
+    setUrl(finalUrl);
+    
+    console.log('Original input:', url);
+    console.log('Cleaned URL:', cleanUrl);
+    console.log('Final URL:', finalUrl);
+    
     setCurrentStep('location');
   };
 
@@ -257,7 +272,7 @@ const ComplianceCheck = () => {
             <div className="max-w-2xl mx-auto">
               <div className="flex gap-4 p-2 bg-card rounded-2xl shadow-2xl border-2 border-primary/20">
                 <Input
-                  placeholder="https://yourwebsite.com"
+                  placeholder="example.com or yourwebsite.com"
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleUrlSubmit()}
@@ -494,12 +509,43 @@ const ComplianceCheck = () => {
               <CardContent>
                 <div className="flex gap-2">
                   <Input
-                    placeholder="https://additional-url.com"
+                    placeholder="example.com"
                     value={newUrl}
                     onChange={(e) => setNewUrl(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && addUrl()}
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter' && newUrl.trim()) {
+                        // Clean the new URL
+                        let cleanNewUrl = newUrl.trim();
+                        if (cleanNewUrl.startsWith('https://')) {
+                          cleanNewUrl = cleanNewUrl.replace('https://', '');
+                        }
+                        if (cleanNewUrl.startsWith('http://')) {
+                          cleanNewUrl = cleanNewUrl.replace('http://', '');
+                        }
+                        const finalNewUrl = 'https://' + cleanNewUrl;
+                        setAdditionalUrls([...additionalUrls, finalNewUrl]);
+                        setNewUrl('');
+                      }
+                    }}
                   />
-                  <Button onClick={addUrl} variant="outline">
+                  <Button 
+                    onClick={() => {
+                      if (newUrl.trim()) {
+                        // Clean the new URL
+                        let cleanNewUrl = newUrl.trim();
+                        if (cleanNewUrl.startsWith('https://')) {
+                          cleanNewUrl = cleanNewUrl.replace('https://', '');
+                        }
+                        if (cleanNewUrl.startsWith('http://')) {
+                          cleanNewUrl = cleanNewUrl.replace('http://', '');
+                        }
+                        const finalNewUrl = 'https://' + cleanNewUrl;
+                        setAdditionalUrls([...additionalUrls, finalNewUrl]);
+                        setNewUrl('');
+                      }
+                    }} 
+                    variant="outline"
+                  >
                     <Plus className="h-4 w-4" />
                   </Button>
                 </div>
