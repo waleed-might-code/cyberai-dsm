@@ -25,6 +25,9 @@ const Header = () => {
           <a href="#testimonials" className="text-muted-foreground hover:text-foreground transition-colors">
             Testimonials
           </a>
+          <a href="/compliance-check" className="text-muted-foreground hover:text-foreground transition-colors">
+            Compliance Check
+          </a>
           <a href="/api-test" className="text-muted-foreground hover:text-foreground transition-colors">
             API Test
           </a>
