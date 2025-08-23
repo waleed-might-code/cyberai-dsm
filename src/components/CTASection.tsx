@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { AlertTriangle, Shield, Clock } from "lucide-react"
+import { AlertTriangle, Shield, Clock, Info } from "lucide-react"
 
 const CTASection = () => {
   return (
@@ -42,9 +42,17 @@ const CTASection = () => {
             </p>
           </div>
 
-          <Button variant="cyber" size="xl" className="px-16 py-6 text-2xl mb-4">
-            Try Cyber AI Now
-          </Button>
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <Button variant="cyber" size="xl" className="px-16 py-6 text-2xl">
+              Try Cyber AI
+            </Button>
+            <div className="group relative">
+              <Info className="w-6 h-6 text-muted-foreground hover:text-cyber-teal cursor-help transition-colors" />
+              <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 bg-popover border border-border rounded-md text-sm text-popover-foreground opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                This is a demonstration of our text compliance AI tool
+              </div>
+            </div>
+          </div>
           
           <p className="text-sm text-muted-foreground">
             Start your free trial today • No installation required • Full Gulf compliance support

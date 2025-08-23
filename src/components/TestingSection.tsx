@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Rocket, Users, Target } from "lucide-react"
+import { Rocket, Users, Target, Info } from "lucide-react"
 
 const TestingSection = () => {
   return (
@@ -78,10 +78,18 @@ const TestingSection = () => {
         </div>
 
         <div className="text-center">
-          <Button variant="cyber" size="xl" className="px-12 py-4 text-xl">
-            Try Cyber AI Now
-          </Button>
-          <p className="text-sm text-muted-foreground mt-4">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <Button variant="cyber" size="xl" className="px-12 py-4 text-xl">
+              Try Cyber AI
+            </Button>
+            <div className="group relative">
+              <Info className="w-5 h-5 text-muted-foreground hover:text-cyber-teal cursor-help transition-colors" />
+              <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 bg-popover border border-border rounded-md text-sm text-popover-foreground opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                This is a demonstration of our text compliance AI tool
+              </div>
+            </div>
+          </div>
+          <p className="text-sm text-muted-foreground">
             Beta access • No commitment required • Gulf enterprises priority
           </p>
         </div>

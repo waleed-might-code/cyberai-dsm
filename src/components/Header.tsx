@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import { Info } from "lucide-react"
 
 const Header = () => {
   return (
@@ -26,9 +27,17 @@ const Header = () => {
           </a>
         </nav>
 
-        <Button variant="cyber" size="lg">
-          Try Cyber AI Now
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="cyber" size="lg">
+            Try Cyber AI
+          </Button>
+          <div className="group relative">
+            <Info className="w-4 h-4 text-muted-foreground hover:text-cyber-teal cursor-help transition-colors" />
+            <div className="absolute right-0 bottom-full mb-2 px-3 py-2 bg-popover border border-border rounded-md text-sm text-popover-foreground opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+              This is a demonstration of our text compliance AI tool
+            </div>
+          </div>
+        </div>
       </div>
     </header>
   )

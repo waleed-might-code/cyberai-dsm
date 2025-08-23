@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Shield, Zap, AlertTriangle } from "lucide-react";
+import { Shield, Zap, AlertTriangle, Info } from "lucide-react";
 import heroImage from "@/assets/cyber-hero-bg.jpg";
 const HeroSection = () => {
   return <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -40,7 +40,15 @@ const HeroSection = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button variant="cyber" size="xl" className="px-12 py-4 text-xl">Try Text Compliance AI Now</Button>
+            <div className="flex items-center gap-3">
+              <Button variant="cyber" size="xl" className="px-12 py-4 text-xl">Try Cyber AI</Button>
+              <div className="group relative">
+                <Info className="w-5 h-5 text-muted-foreground hover:text-cyber-teal cursor-help transition-colors" />
+                <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 bg-popover border border-border rounded-md text-sm text-popover-foreground opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                  This is a demonstration of our text compliance AI tool
+                </div>
+              </div>
+            </div>
             <p className="text-sm text-muted-foreground">
               ☎️ Call us: <span className="text-cyber-teal">+966 11 XXX-XXXX</span>
             </p>
