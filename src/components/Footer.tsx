@@ -122,7 +122,7 @@ const Footer = () => {
             <div className="flex flex-col leading-tight">
               <span className="text-[11px] text-white/30">© 2025 SAUDI CYBER AI</span>
               <span className="text-[11px] text-white/30">
-                A cybersecurity initiative by <span className="text-white/50">Digital Software Market</span>
+                A cybersecurity initiative by <span className="text-white/50">techrealm</span>
               </span>
             </div>
           </div>

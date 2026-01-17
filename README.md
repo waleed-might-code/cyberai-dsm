@@ -1,6 +1,6 @@
-# Saudi Cyber AI (by Digital Software Market)
+# Saudi Cyber AI (by techrealm)
 
-Saudi Cyber AI is a cybersecurity initiative by **Digital Software Market (DSM)**. It provides an AI-powered website compliance workflow (region selection → laws → scan → report) with a modern landing page and a `/compliance-check` experience.
+Saudi Cyber AI is a cybersecurity initiative by **techrealm**. It provides an AI-powered website compliance workflow (region selection → laws → scan → report) with a modern landing page and a `/compliance-check` experience.
 
 ## Local development
 
